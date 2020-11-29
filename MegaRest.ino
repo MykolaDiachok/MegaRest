@@ -3,6 +3,7 @@
 #include <avr/wdt.h>
 #include "aREST.h"
 #include "Light.h"
+#include "Light2.h"
 #include "Button.h"
 
 // Enter a MAC address for your controller below.
@@ -17,18 +18,14 @@ EthernetServer server(80);
 // Create aREST instance
 aREST rest = aREST("192.168.1.132", 3001);
 
-#define ON LOW
-#define OFF HIGH
 
-#define ON2 HIGH
-#define OFF2 LOW
 
 #define hallSW0 14 // выключатель в холе кнопка 0
 
 #define hallSW1 2 // выключатель в холе кнопка 1
 
 #define hallLight 3 // коридор свет
-Light _lightHall(hallLight, ON);
+Light2 _lightHall(hallLight);
 int lightHall(String command)
 {
   return _lightHall.Function(command);
@@ -36,20 +33,20 @@ int lightHall(String command)
 
 #define bathroomSW0 4   // ванная выключатель
 #define bathroomLight 5 // ванная свет
-Light _LightBathroom(bathroomLight, ON);
+Light2 _LightBathroom(bathroomLight);
 int lightBathroom(String command)
 {
   return _LightBathroom.Function(command);
 }
 #define bathroomFan 6 // ванная вентилятор
-Light _LightbathroomFan(bathroomFan, ON);
+Light2 _LightbathroomFan(bathroomFan);
 int lightbathroomFan(String command)
 {
   return _LightbathroomFan.Function(command);
 }
 
 #define bathroomBrace 7 // ванная бра
-Light _LightbathroomBrace(bathroomBrace, ON);
+Light2 _LightbathroomBrace(bathroomBrace);
 int lightbathroomBrace(String command)
 {
   return _LightbathroomBrace.Function(command);
@@ -57,14 +54,14 @@ int lightbathroomBrace(String command)
 
 #define wcSW0 8   // туалет выключатель
 #define wcLight 9 // теалет свет
-Light _LightWC(wcLight, ON);
+Light2 _LightWC(wcLight);
 int lightWC(String command)
 {
   return _LightWC.Function(command);
 }
 
 #define wcFan 10 // туалет выключатель
-Light _LightWCFan(wcFan, ON);
+Light2 _LightWCFan(wcFan);
 int lightWCFan(String command)
 {
   return _LightWCFan.Function(command);
@@ -72,7 +69,7 @@ int lightWCFan(String command)
 int iwcFan = 0;
 
 #define wcBrace 11 // туалет бра
-Light _LightWCBrace(wcBrace, ON);
+Light2 _LightWCBrace(wcBrace);
 int lightWCBrace(String command)
 {
   return _LightWCBrace.Function(command);
@@ -82,26 +79,26 @@ int lightWCBrace(String command)
 #define kitchenSW0_1 16 // кухня выключатель кнопка 1
 #define kitchenSW1_0 17 // кухня выключатель кнопка возле поверхности кнопка 0
 #define kitchenLight 18
-Light _LightKitchen(kitchenLight, ON);
+Light2 _LightKitchen(kitchenLight);
 int lightKitchen(String command)
 {
   return _LightKitchen.Function(command);
 }
 
 #define kitchenLight1 19
-Light _LightKitchen1(kitchenLight1, ON);
+Light2 _LightKitchen1(kitchenLight1);
 int lightKitchen1(String command)
 {
   return _LightKitchen1.Function(command);
 }
 #define kitchenLight2 20
-Light _LightKitchen2(kitchenLight2, ON);
+Light2 _LightKitchen2(kitchenLight2);
 int lightKitchen2(String command)
 {
   return _LightKitchen2.Function(command);
 }
 #define kitchenLightDots 21
-Light _LightKitchenDots(kitchenLightDots, ON);
+Light2 _LightKitchenDots(kitchenLightDots);
 int lightKitchenDots(String command)
 {
   return _LightKitchenDots.Function(command);
@@ -109,7 +106,7 @@ int lightKitchenDots(String command)
 
 #define balconySW0 22
 #define balconyLight 23
-Light _LightBalcony(balconyLight, ON);
+Light2 _LightBalcony(balconyLight);
 int lightBalcony(String command)
 {
   return _LightBalcony.Function(command);
@@ -118,13 +115,13 @@ int lightBalcony(String command)
 #define livingRoomSW0 24
 #define livingRoomSW1 25
 #define livingRoomLight 26
-Light _LightLivingRoom(livingRoomLight, ON2);
+Light _LightLivingRoom(livingRoomLight);
 int lightLivingRoom(String command)
 {
   return _LightLivingRoom.Function(command);
 }
 #define livingRoomBrace 27
-Light _LightLivingRoomBrace(livingRoomBrace, ON2);
+Light _LightLivingRoomBrace(livingRoomBrace);
 int lightLivingRoomBrace(String command)
 {
   return _LightLivingRoomBrace.Function(command);
@@ -137,19 +134,19 @@ int lightLivingRoomBrace(String command)
 #define bedRoomSW2_0 32
 #define bedRoomSW2_1 33
 #define bedRoomLight 34
-Light _LightBedRoom(bedRoomLight, ON2);
+Light _LightBedRoom(bedRoomLight);
 int lightBedRoom(String command)
 {
   return _LightBedRoom.Function(command);
 }
 #define bedRoomBrace0 35
-Light _LightBedRoomBrace0(bedRoomBrace0, ON2);
+Light _LightBedRoomBrace0(bedRoomBrace0);
 int lightBedRoomBrace0(String command)
 {
   return _LightBedRoomBrace0.Function(command);
 }
 #define bedRoomBrace1 36
-Light _LightBedRoomBrace1(bedRoomBrace1, ON2);
+Light _LightBedRoomBrace1(bedRoomBrace1);
 int lightBedRoomBrace1(String command)
 {
   return _LightBedRoomBrace1.Function(command);
@@ -160,13 +157,13 @@ int lightBedRoomBrace1(String command)
 #define childRoomSW1_0 38
 //#define childRoomSW1_1 40
 #define childRoomLight 41
-Light _LightChildRoom(childRoomLight, ON2);
+Light _LightChildRoom(childRoomLight);
 int lightChildRoom(String command)
 {
   return _LightChildRoom.Function(command);
 }
 #define childRoomBrace 42
-Light _LightChildRoomBrace(childRoomBrace, ON2);
+Light _LightChildRoomBrace(childRoomBrace);
 int lightChildRoomBrace(String command)
 {
   return _LightChildRoomBrace.Function(command);
@@ -256,14 +253,14 @@ void setup()
   Serial.begin(115200);
   hButton.NO(); // N.O. Normal Open
   // hButton.NC(); // N.C. Normal Closed
-  hButton.pullUp();
-  //hButton.pullDn(); // - подтяжка пинов кнопок к GND
+  //hButton.pullUp();
+  hButton.pullDn(); // - подтяжка пинов кнопок к GND
   hButton.duration_bounce(50);
   hButton.duration_click_Db(250);
   hButton.duration_inactivity_Up(5000);
   hButton.duration_inactivity_Dn(1000);
   hButton.duration_press(500);
-  
+
   hButton.button(hallSW0 //0
                  ,
                  hallSW1 //1
@@ -329,11 +326,15 @@ void setup()
 }
 EthernetClient httpclient;
 
-template <typename V>
-void publishhttp(const String &buttonName, V eventName)
+void publishhttp(const String &buttonName, int eventName)
 {
   String PATH_NAME = "/button-" + buttonName;
-  String queryString = "?event=" + String(eventName);
+
+  String queryString = "?event=click";
+  if (eventName == 1)
+    queryString = "?event=double-click";
+  else if (eventName == 2)
+    queryString = "?event=hold";
   if (httpclient.connect("192.168.1.132", 3001))
   {
     httpclient.println("GET " + PATH_NAME + queryString + " HTTP/1.1");
@@ -350,41 +351,38 @@ void loop()
   hButton.read();
   //
 
-  if (hButton.event_click_Dn(0) == 1)
-  {
-    Serial.println(String("hallSW0") + "event_click_Dn");
-  }
-  if (hButton.event_click_Db(0) == 1)
-  {
-    Serial.println(String("hallSW0") + "event_click_Db");
-  }
-  if (hButton.event_press_short(0) == 1)
-  {
-    Serial.println(String("hallSW0") + "event_press_short");
-  }
-  if (hButton.event_press_long(0) == 1)
-  {
-    Serial.println(String("hallSW0") + "event_press_long");
-  }
+  // if (hButton.event_click_Dn(0) == 1)
+  // {
+  //   Serial.println("hallSW0");
+  //   publishhttp("hallSW0", 0);
+  // }
+  // if (hButton.event_click_Db(0) == 1)
+  // {
+  //   publishhttp("hallSW0", 2);
+  // }
 
-  if (hButton.event_click_Dn(1) == 1)
+  // if (hButton.event_press_long(0) == 1)
+  // {
+  //   publishhttp("hallSW0", 2);
+  // }
+  for (size_t i = 0; i < buttonCount; i++)
   {
-    Serial.println(String("hallSW0") + "event_click_Dn");
-  }
-  if (hButton.event_click_Db(1) == 1)
-  {
-    Serial.println(String("hallSW0") + "event_click_Db");
-  }
-  if (hButton.event_press_short(1) == 1)
-  {
-    Serial.println(String("hallSW0") + "event_press_short");
-  }
-  if (hButton.event_press_long(1) == 1)
-  {
-    Serial.println(String("hallSW0") + "event_press_long");
-  }
 
-  
+    if (hButton.event_click_Dn(i) == 1)
+    {
+      Serial.println(nameButtons[i].name);
+      publishhttp(nameButtons[i].name, 0);
+    }
+    if (hButton.event_click_Db(i) == 1)
+    {
+      publishhttp(nameButtons[i].name, 2);
+    }
+
+    if (hButton.event_press_long(i) == 1)
+    {
+      publishhttp(nameButtons[i].name, 2);
+    }
+  }
   EthernetClient client = server.available();
   rest.handle(client);
   wdt_reset();

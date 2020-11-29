@@ -1,20 +1,19 @@
 /*
 class for enable/disable relay
 */
-#ifndef Light_h
-#define Light_h
+#ifndef Light2_h
+#define Light2_h
 
 #include "Arduino.h"
 
-class Light
+class Light2
 {
 public:
-    Light(byte pin, bool on = HIGH)
+    Light2(byte pin, bool on = LOW)
     {
-        
         _pin = pin;
-        _on = HIGH;
-        _off = LOW;
+        _on = LOW;
+        _off = HIGH;
         pinMode(_pin, OUTPUT);
         OFF();
     }
@@ -40,8 +39,7 @@ public:
     bool Status()
     {
         bool _status = digitalRead(_pin);
-        return _status;
-        
+        return (!_status);
     }
 
     int Function(String command)

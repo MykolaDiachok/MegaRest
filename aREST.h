@@ -1051,7 +1051,9 @@ void process(char c) {
     if (answer[0] == 'r') {
       state = 'r';
     }
-
+    if (answer[0] == 'r2') {
+      state = 'r2';
+    }
     // If not, get value we want to apply to the pin
     else {
       value = answer.toInt();
@@ -1066,7 +1068,9 @@ void process(char c) {
     if (answer[0] == 'r') {
       state = 'r';
     }
-
+    if (answer[0] == 'r2') {
+      state = 'r2';
+    }
     // Else, write analog value
     else {
       value = answer.toInt();
@@ -1358,6 +1362,21 @@ bool send_command(bool headers, bool decodeArgs) {
       // Send answer
       //if (LIGHTWEIGHT) {
         addToBuffer(value, false);
+      // } else {
+      //   addToBufferF(F("{\"return_value\": "));
+      //   addToBuffer(value, true);
+      //   addToBufferF(F(", "));
+      // }
+      return;
+    }
+    if (state == 'r2') {
+
+      // Read from pin
+      bool v2 = digitalRead(pin);
+      uint16_t v2_2 = !v2;
+      // Send answer
+      //if (LIGHTWEIGHT) {
+        addToBuffer(v2_2, false);
       // } else {
       //   addToBufferF(F("{\"return_value\": "));
       //   addToBuffer(value, true);
