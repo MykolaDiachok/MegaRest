@@ -2,8 +2,6 @@
 #include <Ethernet.h>
 #include <avr/wdt.h>
 #include "aREST.h"
-#include "Light.h"
-#include "Light2.h"
 #include "Button.h"
 
 // Enter a MAC address for your controller below.
@@ -18,114 +16,37 @@ EthernetServer server(80);
 // Create aREST instance
 aREST rest = aREST("192.168.1.132", 3001);
 
-
-
 #define hallSW0 14 // выключатель в холе кнопка 0
 
 #define hallSW1 2 // выключатель в холе кнопка 1
 
 #define hallLight 3 // коридор свет
-Light2 _lightHall(hallLight);
-int lightHall(String command)
-{
-  return _lightHall.Function(command);
-}
 
 #define bathroomSW0 4   // ванная выключатель
 #define bathroomLight 5 // ванная свет
-Light2 _LightBathroom(bathroomLight);
-int lightBathroom(String command)
-{
-  return _LightBathroom.Function(command);
-}
-#define bathroomFan 6 // ванная вентилятор
-Light2 _LightbathroomFan(bathroomFan);
-int lightbathroomFan(String command)
-{
-  return _LightbathroomFan.Function(command);
-}
-
+#define bathroomFan 6   // ванная вентилятор
 #define bathroomBrace 7 // ванная бра
-Light2 _LightbathroomBrace(bathroomBrace);
-int lightbathroomBrace(String command)
-{
-  return _LightbathroomBrace.Function(command);
-}
 
-#define wcSW0 8   // туалет выключатель
-#define wcLight 9 // теалет свет
-Light2 _LightWC(wcLight);
-int lightWC(String command)
-{
-  return _LightWC.Function(command);
-}
-
-#define wcFan 10 // туалет выключатель
-Light2 _LightWCFan(wcFan);
-int lightWCFan(String command)
-{
-  return _LightWCFan.Function(command);
-}
-int iwcFan = 0;
-
+#define wcSW0 8    // туалет выключатель
+#define wcLight 9  // теалет свет
+#define wcFan 10   // туалет выключатель
 #define wcBrace 11 // туалет бра
-Light2 _LightWCBrace(wcBrace);
-int lightWCBrace(String command)
-{
-  return _LightWCBrace.Function(command);
-}
 
 #define kitchenSW0_0 15 // кухня выключатель кнопка 0
 #define kitchenSW0_1 16 // кухня выключатель кнопка 1
 #define kitchenSW1_0 17 // кухня выключатель кнопка возле поверхности кнопка 0
 #define kitchenLight 18
-Light2 _LightKitchen(kitchenLight);
-int lightKitchen(String command)
-{
-  return _LightKitchen.Function(command);
-}
-
 #define kitchenLight1 19
-Light2 _LightKitchen1(kitchenLight1);
-int lightKitchen1(String command)
-{
-  return _LightKitchen1.Function(command);
-}
 #define kitchenLight2 20
-Light2 _LightKitchen2(kitchenLight2);
-int lightKitchen2(String command)
-{
-  return _LightKitchen2.Function(command);
-}
 #define kitchenLightDots 21
-Light2 _LightKitchenDots(kitchenLightDots);
-int lightKitchenDots(String command)
-{
-  return _LightKitchenDots.Function(command);
-}
 
 #define balconySW0 22
 #define balconyLight 23
-Light2 _LightBalcony(balconyLight);
-int lightBalcony(String command)
-{
-  return _LightBalcony.Function(command);
-}
 
 #define livingRoomSW0 24
 #define livingRoomSW1 25
 #define livingRoomLight 26
-Light _LightLivingRoom(livingRoomLight);
-int lightLivingRoom(String command)
-{
-  return _LightLivingRoom.Function(command);
-}
 #define livingRoomBrace 27
-Light _LightLivingRoomBrace(livingRoomBrace);
-int lightLivingRoomBrace(String command)
-{
-  return _LightLivingRoomBrace.Function(command);
-}
 
 #define bedRoomSW0_0 29 //Mykola
 #define bedRoomSW0_1 28 //Mykola
@@ -134,40 +55,15 @@ int lightLivingRoomBrace(String command)
 #define bedRoomSW2_0 32
 #define bedRoomSW2_1 33
 #define bedRoomLight 34
-Light _LightBedRoom(bedRoomLight);
-int lightBedRoom(String command)
-{
-  return _LightBedRoom.Function(command);
-}
 #define bedRoomBrace0 35
-Light _LightBedRoomBrace0(bedRoomBrace0);
-int lightBedRoomBrace0(String command)
-{
-  return _LightBedRoomBrace0.Function(command);
-}
 #define bedRoomBrace1 36
-Light _LightBedRoomBrace1(bedRoomBrace1);
-int lightBedRoomBrace1(String command)
-{
-  return _LightBedRoomBrace1.Function(command);
-}
 
 #define childRoomSW0_0 37
 //#define childRoomSW0_1 38
 #define childRoomSW1_0 38
 //#define childRoomSW1_1 40
 #define childRoomLight 41
-Light _LightChildRoom(childRoomLight);
-int lightChildRoom(String command)
-{
-  return _LightChildRoom.Function(command);
-}
 #define childRoomBrace 42
-Light _LightChildRoomBrace(childRoomBrace);
-int lightChildRoomBrace(String command)
-{
-  return _LightChildRoomBrace.Function(command);
-}
 
 //#define inOutDoorSensor 12
 #define inOutDoorSensor 38
@@ -176,32 +72,37 @@ unsigned long HallTimeOff = 0;
 
 void initLights()
 {
-  rest.function("hall", lightHall);
-
-  rest.function("bathroom", lightBathroom);
-  rest.function("bathroomfan", lightbathroomFan);
-  rest.function("bathroombrace", lightbathroomBrace);
-
-  rest.function("wc", lightWC);
-  rest.function("wcfan", lightWCFan);
-  rest.function("wcbrace", lightWCBrace);
-
-  rest.function("kitchen", lightKitchen);
-  rest.function("kitchen1", lightKitchen1);
-  rest.function("kitchen2", lightKitchen2);
-  rest.function("kitchendots", lightKitchenDots);
-
-  rest.function("balcony", lightBalcony);
-
-  rest.function("livingroom", lightLivingRoom);
-  rest.function("livingroombrace", lightLivingRoomBrace);
-
-  rest.function("bedroom", lightBedRoom);
-  rest.function("bedroombrace0", lightBedRoomBrace0);
-  rest.function("bedroombrace1", lightBedRoomBrace1);
-
-  rest.function("childroom", lightChildRoom);
-  rest.function("childroombrace", lightChildRoomBrace);
+  pinMode(hallLight, OUTPUT);
+  digitalWrite(hallLight, HIGH);
+  pinMode(bathroomLight, OUTPUT);
+  digitalWrite(bathroomLight, HIGH);
+  pinMode(bathroomFan, OUTPUT);
+  digitalWrite(bathroomFan, HIGH);
+  pinMode(bathroomBrace, OUTPUT);
+  digitalWrite(bathroomBrace, HIGH);
+  pinMode(wcLight, OUTPUT);
+  digitalWrite(wcLight, HIGH);
+  pinMode(wcFan, OUTPUT);
+  digitalWrite(wcFan, HIGH);
+  pinMode(wcBrace, OUTPUT);
+  digitalWrite(wcBrace, HIGH);
+  pinMode(kitchenLight, OUTPUT);
+  digitalWrite(kitchenLight, HIGH);
+  pinMode(kitchenLight1, OUTPUT);
+  digitalWrite(kitchenLight1, HIGH);
+  pinMode(kitchenLight2, OUTPUT);
+  digitalWrite(kitchenLight2, HIGH);
+  pinMode(kitchenLightDots, OUTPUT);
+  digitalWrite(kitchenLightDots, HIGH);
+  pinMode(balconyLight, OUTPUT);
+  digitalWrite(balconyLight, HIGH);
+  pinMode(livingRoomLight, OUTPUT);
+  pinMode(livingRoomBrace, OUTPUT);
+  pinMode(bedRoomLight, OUTPUT);
+  pinMode(bedRoomBrace0, OUTPUT);
+  pinMode(bedRoomBrace1, OUTPUT);
+  pinMode(childRoomLight, OUTPUT);
+  pinMode(childRoomBrace, OUTPUT);
 }
 
 Button hButton;
@@ -326,9 +227,10 @@ void setup()
 }
 EthernetClient httpclient;
 
-void publishhttp(const String &buttonName, int eventName)
+void publishhttp(int id, int eventName)
 {
-  String PATH_NAME = "/button-" + buttonName;
+  
+  String PATH_NAME = "/button-" + nameButtons[id].name;
 
   String queryString = "?event=click";
   if (eventName == 1)
@@ -338,7 +240,7 @@ void publishhttp(const String &buttonName, int eventName)
   if (httpclient.connect("192.168.1.132", 3001))
   {
     httpclient.println("GET " + PATH_NAME + queryString + " HTTP/1.1");
-    Serial.println("GET " + PATH_NAME + queryString + " HTTP/1.1");
+    Serial.println("SEND GET " + PATH_NAME + queryString + " HTTP/1.1");
     httpclient.println("Host: 192.168.1.132");
     httpclient.println("Connection: close");
     httpclient.println(); // end HTTP request header
@@ -348,41 +250,300 @@ void publishhttp(const String &buttonName, int eventName)
 
 void loop()
 {
+
   hButton.read();
-  //
-
-  // if (hButton.event_click_Dn(0) == 1)
-  // {
-  //   Serial.println("hallSW0");
-  //   publishhttp("hallSW0", 0);
-  // }
-  // if (hButton.event_click_Db(0) == 1)
-  // {
-  //   publishhttp("hallSW0", 2);
-  // }
-
-  // if (hButton.event_press_long(0) == 1)
-  // {
-  //   publishhttp("hallSW0", 2);
-  // }
-  for (size_t i = 0; i < buttonCount; i++)
+//
+#pragma region OutDoor //TODO доделать
+  if (hButton.event_click_Dn(18) == 1)
   {
-
-    if (hButton.event_click_Dn(i) == 1)
-    {
-      Serial.println(nameButtons[i].name);
-      publishhttp(nameButtons[i].name, 0);
-    }
-    if (hButton.event_click_Db(i) == 1)
-    {
-      publishhttp(nameButtons[i].name, 2);
-    }
-
-    if (hButton.event_press_long(i) == 1)
-    {
-      publishhttp(nameButtons[i].name, 2);
-    }
+    publishhttp(18, 0);
   }
+  if (hButton.event_click_Up(18) == 1)
+  {
+    publishhttp(18, 2);
+  }
+#pragma endregion
+
+#pragma region hall
+#pragma region hallSW0
+  if (hButton.event_click_Dn(0) == 1)
+  {
+    publishhttp(0, 0);
+  }
+  if (hButton.event_click_Db(0) == 1)
+  {
+    publishhttp(0, 1);
+  }
+  if (hButton.event_press_long(0) == 1)
+  {
+    publishhttp(0, 2);
+  }
+#pragma endregion
+
+#pragma region hallSW1
+  if (hButton.event_click_Dn(1) == 1)
+  {
+    publishhttp(1, 0);
+  }
+  if (hButton.event_click_Db(1) == 1)
+  {
+    publishhttp(1, 1);
+  }
+  if (hButton.event_press_long(1) == 1)
+  {
+    publishhttp(1, 2);
+  }
+#pragma endregion
+#pragma endregion
+
+#pragma region bathroom
+  if (hButton.event_click_Dn(2) == 1)
+  {
+    publishhttp(2, 0);
+  }
+  if (hButton.event_click_Db(2) == 1) //only lights
+  {
+    publishhttp(2, 1);
+  }
+  if (hButton.event_press_long(2) == 1) //only fan
+  {
+    publishhttp(2, 2);
+  }
+#pragma endregion
+
+#pragma region WC //wcSW0
+  if (hButton.event_click_Dn(3) == 1)
+  {
+    publishhttp(3, 0);
+  }
+  if (hButton.event_click_Db(3) == 1)
+  {
+    publishhttp(3, 1);
+  }  
+  if (hButton.event_press_long(3) == 1)
+  {
+    publishhttp(3, 2);
+  }
+#pragma endregion
+
+#pragma region kitchen
+#pragma region kitchenSW0_0
+  if (hButton.event_click_Dn(4) == 1)
+  {
+    publishhttp(4, 0);
+  }
+  if (hButton.event_click_Db(4) == 1)
+  {
+    publishhttp(4, 1);
+  }
+  
+  if (hButton.event_press_long(4) == 1)
+  {
+    publishhttp(4, 2);
+  }
+#pragma endregion
+
+#pragma region kitchenSW0_1
+  if (hButton.event_click_Dn(5) == 1)
+  {
+    publishhttp(5, 0);
+  }
+  if (hButton.event_click_Db(5) == 1)
+  {
+    publishhttp(5, 1);
+  }  
+  if (hButton.event_press_long(5) == 1)
+  {
+    publishhttp(5, 2);
+  }
+#pragma endregion
+
+#pragma region kitchenSW1_0
+  if (hButton.event_click_Dn(6) == 1)
+  {
+    publishhttp(6, 0);
+  }
+  if (hButton.event_click_Db(6) == 1)
+  {
+    publishhttp(6, 1);
+  }  
+  if (hButton.event_press_long(6) == 1)
+  {
+    publishhttp(6, 2);
+  }
+#pragma endregion
+#pragma endregion
+
+#pragma region balconySW0
+  if (hButton.event_click_Dn(7) == 1)
+  {
+    publishhttp(7, 0);
+  }
+  if (hButton.event_click_Db(7) == 1)
+  {
+    publishhttp(7, 1);
+  }  
+  if (hButton.event_press_long(7) == 1)
+  {
+    publishhttp(7, 2);
+  }
+#pragma endregion
+
+#pragma region livingRoom
+#pragma region livingRoomSW0
+  if (hButton.event_click_Dn(8) == 1)
+  {
+    publishhttp(8, 0);
+  }
+  if (hButton.event_click_Db(8) == 1)
+  {
+    publishhttp(8, 1);
+  }  
+  if (hButton.event_press_long(8) == 1)
+  {
+    publishhttp(8, 2);
+  }
+#pragma endregion
+
+#pragma region livingRoomSW1
+  if (hButton.event_click_Dn(9) == 1)
+  {
+    publishhttp(9, 0);
+  }
+  if (hButton.event_click_Db(9) == 1)
+  {
+    publishhttp(9, 1);
+  }  
+  if (hButton.event_press_long(9) == 1)
+  {
+    publishhttp(9, 2);
+  }
+#pragma endregion
+
+#pragma endregion
+
+#pragma region bedRoom
+#pragma region bedRoomSW0_0
+  if (hButton.event_click_Dn(10) == 1)
+  {
+    publishhttp(10, 0);
+  }
+  if (hButton.event_click_Db(10) == 1)
+  {
+    publishhttp(10, 1);
+  }  
+  if (hButton.event_press_long(10) == 1)
+  {
+    publishhttp(10, 2);
+  }
+#pragma endregion
+
+#pragma region bedRoomSW0_1
+  if (hButton.event_click_Dn(11) == 1)
+  {
+    publishhttp(11, 0);
+  }
+  if (hButton.event_click_Db(11) == 1)
+  {
+    publishhttp(11, 1);
+  }  
+  if (hButton.event_press_long(11) == 1)
+  {
+    publishhttp(11, 2);
+  }
+#pragma endregion
+
+#pragma region bedRoomSW1_0
+  if (hButton.event_click_Dn(12) == 1)
+  {
+    publishhttp(12, 0);
+  }
+  if (hButton.event_click_Db(12) == 1)
+  {
+    publishhttp(12, 1);
+  }  
+  if (hButton.event_press_long(12) == 1)
+  {
+    publishhttp(12, 2);
+  }
+#pragma endregion
+#pragma region bedRoomSW1_1
+  if (hButton.event_click_Dn(13) == 1)
+  {
+    publishhttp(13, 0);
+  }
+  if (hButton.event_click_Db(13) == 1)
+  {
+    publishhttp(13, 1);
+  }  
+  if (hButton.event_press_long(13) == 1)
+  {
+    publishhttp(13, 2);
+  }
+#pragma endregion
+#pragma region bedRoomSW2_1
+  if (hButton.event_click_Dn(14) == 1)
+  {
+    publishhttp(14, 0);
+  }
+  if (hButton.event_click_Db(14) == 1)
+  {
+    publishhttp(14, 1);
+  }  
+  if (hButton.event_press_long(14) == 1)
+  {
+    publishhttp(14, 2);
+  }
+#pragma endregion
+#pragma region bedRoomSW2_2
+  if (hButton.event_click_Dn(15) == 1)
+  {
+    publishhttp(15, 0);
+  }
+  if (hButton.event_click_Db(15) == 1)
+  {
+    publishhttp(15, 1);
+  }  
+  if (hButton.event_press_long(15) == 1)
+  {
+    publishhttp(15, 2);
+  }
+#pragma endregion
+
+#pragma endregion
+
+#pragma region childRoom
+#pragma region childRoomSW0_0
+  if (hButton.event_click_Dn(16) == 1)
+  {
+    publishhttp(16, 0);
+  }
+  if (hButton.event_click_Db(16) == 1)
+  {
+    publishhttp(16, 1);
+  }  
+  if (hButton.event_press_long(16) == 1)
+  {
+    publishhttp(16, 2);
+  }
+#pragma endregion
+
+#pragma region childRoomSW1_0
+  if (hButton.event_click_Dn(17) == 1)
+  {
+    publishhttp(17, 0);
+  }
+  if (hButton.event_click_Db(17) == 1)
+  {
+    publishhttp(17, 1);
+  }  
+  if (hButton.event_press_long(17) == 1)
+  {
+    publishhttp(17, 2);
+  }
+#pragma endregion
+#pragma endregion
+
   EthernetClient client = server.available();
   rest.handle(client);
   wdt_reset();

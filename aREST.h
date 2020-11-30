@@ -72,7 +72,7 @@
 
 // Include Arduino header
 #include "Arduino.h"
-#include "Light.h"
+
 
 // MQTT packet size
 #undef MQTT_MAX_PACKET_SIZE
@@ -138,7 +138,7 @@
 
 // Use light answer mode
 #ifndef LIGHTWEIGHT
-#define LIGHTWEIGHT 0
+#define LIGHTWEIGHT 1
 #endif
 
 #ifdef AREST_NUMBER_VARIABLES
@@ -161,9 +161,9 @@
 // Default number of max. exposed functions
 #ifndef NUMBER_FUNCTIONS
   #if defined(__AVR_ATmega1280__) || defined(ESP32) || defined(__AVR_ATmega2560__) || defined(CORE_WILDFIRE) || defined(ESP8266)
-  #define NUMBER_FUNCTIONS 20
+  #define NUMBER_FUNCTIONS 10
   #else
-  #define NUMBER_FUNCTIONS 20
+  #define NUMBER_FUNCTIONS 10
   #endif
 #endif
 
@@ -975,7 +975,9 @@ void handle(PubSubClient& client){
 }
 
 void reconnect(PubSubClient& client) {
-
+  if (DEBUG_MODE) {    
+    Serial.println("run procedure:reconnect");
+  }
   // Loop until we're reconnected
   while (!client.connected()) {
     Serial.print(F("Attempting MQTT connection..."));
@@ -1018,7 +1020,9 @@ void reconnect(PubSubClient& client) {
 #endif
 
 void process(char c) {
-
+ if (DEBUG_MODE) {    
+    Serial.println("run procedure:process");
+  }
   // Check if we are receveing useful data and process it
 
   if(state != 'u')
@@ -1051,8 +1055,8 @@ void process(char c) {
     if (answer[0] == 'r') {
       state = 'r';
     }
-    if (answer[0] == 'r2') {
-      state = 'r2';
+    else if (answer[0] == 'q') {
+      state = 'q';
     }
     // If not, get value we want to apply to the pin
     else {
@@ -1068,8 +1072,8 @@ void process(char c) {
     if (answer[0] == 'r') {
       state = 'r';
     }
-    if (answer[0] == 'r2') {
-      state = 'r2';
+    else if (answer[0] == 'q') {
+      state = 'q';
     }
     // Else, write analog value
     else {
@@ -1116,7 +1120,9 @@ void process(char c) {
         if (answer[0] == 'a') {
           state = 'a';
         }
-
+        else if (answer[0] == 'q') {
+          state = 'q';
+        }
         // Save state & end there
         else {
           state = 'r';
@@ -1255,6 +1261,10 @@ void process(char c) {
 
 // Modifies arguments in place
 void urldecode(String &arguments) {
+  if (DEBUG_MODE) {    
+    Serial.println("run procedure:urldecode");
+    Serial.println(arguments);
+  }
   char a, b;
   int j = 0;
   for(int i = 0; i < arguments.length(); i++) {
@@ -1302,7 +1312,7 @@ bool send_command(bool headers, bool decodeArgs) {
   }
 
   // Start of message
-  if (headers && command != 'r') {
+  if (headers && (command != 'r' || command != 'q')) {
     send_http_headers();
   }
 
@@ -1369,7 +1379,7 @@ bool send_command(bool headers, bool decodeArgs) {
       // }
       return;
     }
-    if (state == 'r2') {
+    else if (state == 'q') {
 
       // Read from pin
       bool v2 = digitalRead(pin);
