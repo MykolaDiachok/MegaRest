@@ -66,7 +66,7 @@ aREST rest = aREST("192.168.1.132", 3001);
 #define childRoomBrace 42
 
 //#define inOutDoorSensor 12
-#define inOutDoorSensor 38
+#define inOutDoorSensor 12
 
 unsigned long HallTimeOff = 0;
 
@@ -248,6 +248,26 @@ void publishhttp(int id, int eventName)
   }
 }
 
+void setDoorStatus(int id, int eventState)
+{
+  //http://192.168.1.132:51828/?accessoryId=sensordoor&state=true
+  String PATH_NAME = String("/?accessoryId=")+String("sensordoor")+String("&state=");
+
+  String queryString = "true";
+  if (eventState == 1)
+    queryString = "false";
+  
+  if (httpclient.connect("192.168.1.132", 51828))
+  {
+    httpclient.println("GET " + PATH_NAME + queryString + " HTTP/1.1");
+    Serial.println("SEND GET " + PATH_NAME + queryString + " HTTP/1.1");
+    httpclient.println("Host: 192.168.1.132");
+    httpclient.println("Connection: close");
+    httpclient.println(); // end HTTP request header
+    httpclient.stop();
+  }
+}
+
 void loop()
 {
 
@@ -256,12 +276,15 @@ void loop()
 #pragma region OutDoor //TODO доделать
   if (hButton.event_click_Dn(18) == 1)
   {
-    publishhttp(18, 0);
+    //Serial.println("18:event_click_Dn");
+    setDoorStatus(0,0);
   }
   if (hButton.event_click_Up(18) == 1)
   {
-    publishhttp(18, 2);
+    //Serial.println("18:event_click_Up");
+    setDoorStatus(0,1);
   }
+  
 #pragma endregion
 
 #pragma region hall
