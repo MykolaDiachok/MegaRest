@@ -28,9 +28,9 @@ aREST rest = aREST("192.168.1.132", 3001);
 #define bathroomBrace 7 // ванная бра
 
 #define wcSW0 8    // туалет выключатель
-#define wcLight 9  // теалет свет
-#define wcFan 10   // туалет выключатель
-#define wcBrace 11 // туалет бра
+#define wcLight 44  // теалет свет
+#define wcFan 43   // туалет вентилятор
+#define wcBrace 45 // туалет бра
 
 #define kitchenSW0_0 15 // кухня выключатель кнопка 0
 #define kitchenSW0_1 16 // кухня выключатель кнопка 1
@@ -119,20 +119,20 @@ myButtom nameButtons[] = {
     {1, "hallSW1", hallSW1},
     {2, "bathroomSW0", bathroomSW0},
     {3, "wcSW0", wcSW0},
-    {4, "kitchenSW0_0", kitchenSW0_0},
-    {5, "kitchenSW0_1", kitchenSW0_1},
-    {6, "kitchenSW1_0", kitchenSW1_0},
+    {4, "kitchenSW0-0", kitchenSW0_0},
+    {5, "kitchenSW0-1", kitchenSW0_1},
+    {6, "kitchenSW1-0", kitchenSW1_0},
     {7, "balconySW0", balconySW0},
     {8, "livingRoomSW0", livingRoomSW0},
     {9, "livingRoomSW1", livingRoomSW1},
-    {10, "bedRoomSW0_0", bedRoomSW0_0},
-    {11, "bedRoomSW0_1", bedRoomSW0_1},
-    {12, "bedRoomSW1_0", bedRoomSW1_0},
-    {13, "bedRoomSW1_1", bedRoomSW1_1},
-    {14, "bedRoomSW2_0", bedRoomSW2_0},
-    {15, "bedRoomSW2_1", bedRoomSW2_1},
-    {16, "childRoomSW0_0", childRoomSW0_0},
-    {17, "childRoomSW1_0", childRoomSW1_0},
+    {10, "bedRoomSW0-0", bedRoomSW0_0},
+    {11, "bedRoomSW0-1", bedRoomSW0_1},
+    {12, "bedRoomSW1-0", bedRoomSW1_0},
+    {13, "bedRoomSW1-1", bedRoomSW1_1},
+    {14, "bedRoomSW2-0", bedRoomSW2_0},
+    {15, "bedRoomSW2-1", bedRoomSW2_1},
+    {16, "childRoomSW0-0", childRoomSW0_0},
+    {17, "childRoomSW1-0", childRoomSW1_0},
     {18, "inOutDoorSensor", inOutDoorSensor}};
 
 int buttonCount = sizeof(nameButtons) / sizeof(myButtom);
